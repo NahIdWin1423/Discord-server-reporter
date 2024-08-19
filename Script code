@@ -1,0 +1,67 @@
+const axios = require('axios');
+
+const DISCORD_API_URL = 'https://discord.com/api/v9';
+
+const SERVER_ID = 'YOUR_SERVER_ID'; // Replace with the actual server ID
+
+const TOKEN = 'YOUR_BOT_TOKEN'; // Replace with your bot token
+
+async function reportServer() {
+
+try {
+
+const response = await axios.post(`${DISCORD_API_URL}/report`, {
+
+server_id: SERVER_ID,
+
+reason: 'Inappropriate content' // Specify the reason for reporting
+
+}, {
+
+headers: {
+
+'Authorization': `Bot ${TOKEN}`,
+
+'Content-Type': 'application/json'
+
+}
+
+});
+
+console.log(`Successfully reported the server: ${response.data.message}`);
+
+} catch (error) {
+
+handleError(error);
+
+}
+
+}
+
+function handleError(error) {
+
+if (error.response) {
+
+// The request was made and the server responded with a status code
+
+console.error(`Error: ${error.response.data.message} (Status Code: ${error.response.status})`);
+
+} else if (error.request) {
+
+// The request was made but no response was received
+
+console.error('Error: No response received from the server.');
+
+} else {
+
+// Something happened in setting up the request that triggered an Error
+
+console.error(`Error: ${error.message}`);
+
+}
+
+}
+
+// Execute the report function
+
+reportServer();
